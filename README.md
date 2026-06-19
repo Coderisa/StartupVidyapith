@@ -209,7 +209,7 @@ This project is licensed under the MIT License – see the LICENSE file for deta
 
 ---
 
-🙏 Acknowledgments
+##🙏 Acknowledgments
 Banasthali Vidyapith for inspiring the platform.
 Sentence‑Transformers for the semantic search model.
 The open‑source community for all the amazing tools.
