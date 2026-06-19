@@ -90,36 +90,46 @@ ML Service Docs: http://localhost:8000/docs
 If you prefer to run each service separately:
 
 Backend
-bash
+
 cd Backend
 npm install
 npm start
 # Runs on http://localhost:5000
+
+
 Frontend
-bash
+
 cd Frontend
 npm install
 npm run dev
 # Runs on http://localhost:5173
+
+
 ML Service
-bash
+
 cd ml-service
 pip install -r requirements.txt
 uvicorn recommender_api:app --host 0.0.0.0 --port 8000
 # Runs on http://localhost:8000
+
+
 🔐 Environment Variables
 Backend .env
-env
+
 PORT=5000
 MONGODB_URI=mongodb+srv://...
 JWT_SECRET=your_jwt_secret
 FRONTEND_URL=http://localhost:5173
 NODE_ENV=development
+
+
 Frontend .env.local
-env
+
 VITE_API_BASE_URL=http://localhost:5000/api
 VITE_API_URL=http://localhost:5000
 VITE_ML_SERVICE_URL=http://localhost:8000
+
+
 👥 Demo Accounts
 Use these pre‑created accounts to test the platform:
 
@@ -127,6 +137,7 @@ Role	Banasthali ID	Email	Password
 Student	BTCSE20201	priya.sharma@gmail.com	Student@123
 Founder	BTFDR20201	meera.joshi@techstartup.com	Founder@123
 Admin	BTADM20201	sunita.verma@banasthali.in	Admin@123
+
 🚀 Deployment
 Frontend → Vercel
 Push your code to GitHub.
@@ -137,38 +148,27 @@ Set Root Directory to Frontend/.
 
 Add environment variables:
 
-VITE_API_BASE_URL = https://your-backend.onrender.com/api
-
-VITE_API_URL = https://your-backend.onrender.com
-
-VITE_ML_SERVICE_URL = https://your-ml-service.onrender.com
+VITE_API_BASE_URL=https://your-backend.onrender.com/api
+VITE_API_URL=https://your-backend.onrender.com
+VITE_ML_SERVICE_URL=https://your-ml-service.onrender.com
 
 Backend → Render
 Create a new Web Service on Render.
-
 Connect your GitHub repo.
-
 Set Root Directory to Backend/.
-
 Build Command: npm install
-
 Start Command: node -r crypto server.js
-
 Add environment variables (same as your local .env).
 
 ML Service → Render
 Create a new Web Service on Render.
-
 Set Root Directory to ml-service/.
-
 Build Command: pip install -r requirements.txt
-
 Start Command: uvicorn recommender_api:app --host 0.0.0.0 --port $PORT
-
 Add environment variable: PORT = 8000.
 
 📂 Project Structure
-text
+
 StartupVidyapith/
 ├── Backend/                 # Node.js + Express API
 │   ├── routes/              # API routes
@@ -191,17 +191,16 @@ StartupVidyapith/
 ├── docker-compose.yml       # Docker orchestration
 ├── .env                     # Secrets (NOT committed)
 └── README.md
+
+
 🤝 Contributing
 Contributions are welcome! Please open an issue or submit a pull request.
 
 Fork the repository.
 
 Create a new branch (git checkout -b feature/amazing-feature).
-
 Commit your changes (git commit -m 'Add some amazing feature').
-
 Push to the branch (git push origin feature/amazing-feature).
-
 Open a Pull Request.
 
 📄 License
