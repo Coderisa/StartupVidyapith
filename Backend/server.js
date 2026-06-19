@@ -38,10 +38,27 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // CORS setup – allows any origin (good for development)
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'startup-vidyapith-ten.vercel.app',   // <-- ADD YOUR VERCEL URL
+  'https://startup-backend-2lxx.onrender.com' // <-- ADD BACKEND URL FOR CORS TOO
+];
+
 app.use(cors({
-  origin: true,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
 
 // Static files
 const uploadsPath = path.join(__dirname, 'uploads');
