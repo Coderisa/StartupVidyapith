@@ -10,7 +10,7 @@ app = FastAPI()
 # CORS – allow React frontend (adjust ports as needed)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173",startup-vidyapith-ten.vercel.app],
+    allow_origins=["http://localhost:3000", "http://localhost:5173","startup-vidyapith-ten.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
