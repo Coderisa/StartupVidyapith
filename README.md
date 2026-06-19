@@ -167,6 +167,100 @@ Build Command: pip install -r requirements.txt
 Start Command: uvicorn recommender_api:app --host 0.0.0.0 --port $PORT
 Add environment variable: PORT = 8000.
 
+# 🤖 ML Service – Startup Semantic Recommender
+
+This is a standalone **AI Microservice** built with FastAPI that provides intelligent startup recommendations. Instead of relying on simple keyword matching, it uses **semantic understanding** (Sentence-BERT) to interpret user queries and find the most relevant startups based on meaning and context.
+
+It runs independently on port `8000` and communicates with your frontend/backend via REST APIs.
+
+---
+
+## 🚀 Features
+
+- **Semantic Search (`/recommend`)** – Finds startups that *meaningfully* match a user's text query (handles synonyms, context, and slight misspellings).
+- **Similar Startups (`/similar_startups`)** – Returns other startups in the same semantic cluster (K-Means) when viewing a specific startup.
+- **CORS Enabled** – Pre-configured to allow requests from your React frontend.
+
+---
+
+## 🧠 How It Works (The Logic)
+
+### 1. Training Phase (`train_semantic.py`)
+You run this script **once** (or whenever you add new startups) to prepare the AI models.
+
+- **Step A: Load Data** – Reads `startups.json` (which contains startup names, descriptions, industries, etc.).
+- **Step B: Convert to Vectors** – Uses the `all-MiniLM-L6-v2` model from `sentence-transformers` to convert each startup's "text" field into a **384-dimensional number list** (called an embedding). 
+- **Step C: Grouping (Clustering)** – Uses `KMeans` from `scikit-learn` to group these vectors into clusters (default: 4 clusters). Startups in the same cluster are similar to each other.
+- **Step D: Save** – Exports 4 files (`.pkl`) that the API loads at startup.
+
+### 2. Serving Phase (`recommender_api.py`)
+This is the live FastAPI web server.
+
+- **Startup** – Loads the `.pkl` files into memory.
+- **User Query** – Converts the user's text into a vector using the same AI model.
+- **Similarity Check** – Compares the user's vector against all saved startup vectors using **Cosine Similarity**.
+- **Return** – Sorts the startups from highest score to lowest and returns the top matches.
+
+### 3. The Endpoints
+
+| Endpoint | Method | What it does |
+| :--- | :--- | :--- |
+| `/recommend` | POST | Takes a user's search text and returns the top matching startups. |
+| `/similar_startups` | POST | Takes a `startup_id` and returns other startups in the same cluster. |
+
+---
+
+## 🛠️ Tech Stack
+
+- **FastAPI** – Web framework for building the REST API.
+- **Uvicorn** – ASGI server to run the service.
+- **Sentence-Transformers** – Provides the `all-MiniLM-L6-v2` model (lightweight, CPU-friendly).
+- **Scikit-learn** – K-Means clustering and cosine similarity calculations.
+- **Joblib** – Efficiently saves/loads Python objects (`.pkl` files).
+- **Pydantic** – Request/response data validation.
+
+---
+ml-service/
+├── recommender_api.py # FastAPI server (endpoints)
+├── train_semantic.py # Script to train/retrain the models
+├── semantic_model.pkl # The SentenceTransformer AI brain
+├── startup_embeddings.pkl # Pre-calculated vectors for all startups
+├── startups_data.pkl # Startup data with cluster labels
+├── kmeans_model.pkl # K-Means clustering model
+├── startups.json # Source data for training (list of startups)
+├── requirements.txt # Python dependencies
+└── Dockerfile # Containerization (optional)
+## 📂 Folder Structure
+
+
+---
+
+## ⚙️ Setup & Installation
+
+1. Navigate to the `ml-service` folder:
+
+   ```bash
+   cd ml-service
+2 .Create and activate a virtual environment (recommended):
+python -m venv venv
+source venv/bin/activate      # On Windows: venv\Scripts\activate
+
+3 .Install dependencies:
+pip install -r requirements.txt
+
+🏃 Running the Service
+uvicorn recommender_api:app --host 0.0.0.0 --port 8000 --reload
+
+You should see:
+✅ Loaded semantic models
+INFO:     Uvicorn running on http://0.0.0.0:8000
+
+🐳 Running with Docker
+If you are using the root docker-compose.yml file, this service is already included. To build and run just this service manually:
+
+docker build -t ml-service .
+docker run -p 8000:8000 ml-service
+
 📂 Project Structure
 
 StartupVidyapith/
