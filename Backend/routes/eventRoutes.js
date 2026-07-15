@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-//const Event = require('../models/Event');
-//const { protect } = require('../middleware/authMiddleware.js');
+const Event = require('../models/Event');
+const { protect } = require('../middleware/authMiddleware.js');
 
 // @desc    Get all events
 // @route   GET /api/events
