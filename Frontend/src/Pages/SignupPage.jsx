@@ -1,7 +1,7 @@
 // src/pages/SignupPage.js - WITH OTP VERIFICATION
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../Pages/AuthContext';
+//import { useAuth } from '../Pages/AuthContext';
 import { API_BASE_URL } from '../constants';
 import './AuthPages.css';
 
