@@ -2,7 +2,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();
-//const Founder = require('../models/Founder');
+const Founder = require('../models/Founder');
 const User = require('../models/User');
 
 // ✅ POST endpoint for creating/updating founder profile (MAIN ENDPOINT)
